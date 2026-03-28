@@ -39,6 +39,26 @@ export CAL_API_KEY=cal_live_your_api_key_here
 | `cal_get_availability` | Check available slots for an event type in a date range |
 | `cal_list_schedules` | List all schedules (working hours / availability rules) |
 
+## Resources
+
+Resources are automatically available in the AI's context — no need to ask for them.
+
+| Resource | URI | Description |
+|----------|-----|-------------|
+| Upcoming Bookings | `cal://bookings/upcoming` | Today's and tomorrow's bookings |
+| Event Types | `cal://event-types` | All configured event types |
+| Schedules | `cal://schedules` | Working hours and availability rules |
+
+## Prompts
+
+Ready-made prompt templates for common scheduling tasks.
+
+| Prompt | Description |
+|--------|-------------|
+| `daily-schedule` | Summarize today's schedule with bookings and free slots |
+| `find-free-slot` | Find next available time for a specific event type |
+| `reschedule-suggestion` | Suggest alternative times for rescheduling a booking |
+
 ## Configuration
 
 ### Claude Desktop
@@ -111,6 +131,16 @@ The server starts and responds to `tools/list` without `CAL_API_KEY`. The key is
 - Use environment variables or a secrets manager
 - The server only reads `CAL_API_KEY` at tool call time, never logs it
 
+## Related Projects
+
+- [@aiwerk/mcp-bridge](https://github.com/AIWerk/mcp-bridge) — MCP router with 100+ server recipes
+- [@aiwerk/mcp-server-imap](https://github.com/AIWerk/mcp-server-imap) — Universal IMAP/SMTP email MCP server
+- [AIWerk MCP Catalog](https://catalog.aiwerk.ch) — Searchable catalog of MCP server recipes
+
+## Contributing
+
+Issues and PRs are welcome! Please open an issue first for larger changes.
+
 ## License
 
-MIT - AIWerk <kontakt@aiwerk.ch>
+MIT - [AIWerk](https://aiwerk.ch)
