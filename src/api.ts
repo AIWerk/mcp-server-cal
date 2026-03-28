@@ -73,7 +73,7 @@ async function handleResponse<T>(response: Response, context: string): Promise<T
   }
 }
 
-async function fetchWithRetry(url: string, init: RequestInit, context: string): Promise<Response> {
+async function fetchWithRetry(url: string, init: RequestInit, _context?: string): Promise<Response> {
   const response = await fetch(url, { ...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
 
   if (response.status === 429) {
