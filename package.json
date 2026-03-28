@@ -1,0 +1,39 @@
+{
+  "name": "@aiwerk/mcp-server-cal",
+  "version": "1.0.0",
+  "description": "Cal.com scheduling MCP server - manage bookings, event types, and availability",
+  "type": "module",
+  "main": "dist/src/server.js",
+  "bin": {
+    "mcp-server-cal": "dist/src/server.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/src/server.js",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "cal.com",
+    "scheduling",
+    "calendar",
+    "booking"
+  ],
+  "author": "AIWerk <kontakt@aiwerk.ch>",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.19.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ]
+}
