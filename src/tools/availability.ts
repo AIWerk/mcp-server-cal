@@ -22,10 +22,10 @@ export async function getAvailability(args: {
   if (args.timeZone) params['timeZone'] = args.timeZone;
 
   const response = await calGet<CalApiResponse<SlotsResponse>>('/slots', params);
-  return response.data ?? response;
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function listSchedules(): Promise<unknown> {
   const response = await calGet<CalApiResponse<Schedule[]>>('/schedules');
-  return response.data ?? response;
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }

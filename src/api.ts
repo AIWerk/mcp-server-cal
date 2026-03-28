@@ -38,6 +38,8 @@ function buildHeaders(apiKey: string): Record<string, string> {
   };
 }
 
+const REQUEST_TIMEOUT_MS = 30_000;
+
 async function handleResponse<T>(response: Response, context: string): Promise<T> {
   const text = await response.text();
 
@@ -71,6 +73,19 @@ async function handleResponse<T>(response: Response, context: string): Promise<T
   }
 }
 
+async function fetchWithRetry(url: string, init: RequestInit, context: string): Promise<Response> {
+  const response = await fetch(url, { ...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+
+  if (response.status === 429) {
+    const retryAfter = response.headers.get('Retry-After');
+    const delayMs = retryAfter ? Math.min(Number(retryAfter) * 1000, 60_000) : 2000;
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+    return fetch(url, { ...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+  }
+
+  return response;
+}
+
 export async function calGet<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
   const apiKey = getApiKey();
   const base = getBaseUrl();
@@ -87,10 +102,10 @@ export async function calGet<T>(path: string, params?: Record<string, string | n
     if (qs) url += `?${qs}`;
   }
 
-  const response = await fetch(url, {
+  const response = await fetchWithRetry(url, {
     method: 'GET',
     headers: buildHeaders(apiKey),
-  });
+  }, `GET ${path}`);
 
   return handleResponse<T>(response, `GET ${path}`);
 }
@@ -99,11 +114,11 @@ export async function calPost<T>(path: string, body: unknown): Promise<T> {
   const apiKey = getApiKey();
   const base = getBaseUrl();
 
-  const response = await fetch(`${base}${path}`, {
+  const response = await fetchWithRetry(`${base}${path}`, {
     method: 'POST',
     headers: buildHeaders(apiKey),
     body: JSON.stringify(body),
-  });
+  }, `POST ${path}`);
 
   return handleResponse<T>(response, `POST ${path}`);
 }
@@ -112,11 +127,11 @@ export async function calPatch<T>(path: string, body: unknown): Promise<T> {
   const apiKey = getApiKey();
   const base = getBaseUrl();
 
-  const response = await fetch(`${base}${path}`, {
+  const response = await fetchWithRetry(`${base}${path}`, {
     method: 'PATCH',
     headers: buildHeaders(apiKey),
     body: JSON.stringify(body),
-  });
+  }, `PATCH ${path}`);
 
   return handleResponse<T>(response, `PATCH ${path}`);
 }
@@ -125,10 +140,10 @@ export async function calDelete<T>(path: string): Promise<T> {
   const apiKey = getApiKey();
   const base = getBaseUrl();
 
-  const response = await fetch(`${base}${path}`, {
+  const response = await fetchWithRetry(`${base}${path}`, {
     method: 'DELETE',
     headers: buildHeaders(apiKey),
-  });
+  }, `DELETE ${path}`);
 
   return handleResponse<T>(response, `DELETE ${path}`);
 }

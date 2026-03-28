@@ -18,15 +18,15 @@ export async function listBookings(args: {
   if (args.limit) params['take'] = args.limit;
 
   const response = await calGet<CalApiResponse<Booking[]>>('/bookings', params);
-  return response.data ?? response;
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function getBooking(args: { uid: string }): Promise<unknown> {
   if (!args.uid?.trim()) {
     throw new Error('uid is required');
   }
-  const response = await calGet<CalApiResponse<Booking>>(`/bookings/${args.uid}`);
-  return response.data ?? response;
+  const response = await calGet<CalApiResponse<Booking>>(`/bookings/${encodeURIComponent(args.uid)}`);
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function createBooking(args: {
@@ -60,7 +60,7 @@ export async function createBooking(args: {
   if (args.metadata) body['metadata'] = args.metadata;
 
   const response = await calPost<CalApiResponse<Booking>>('/bookings', body);
-  return response.data ?? response;
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function cancelBooking(args: {
@@ -72,8 +72,8 @@ export async function cancelBooking(args: {
   const body: Record<string, unknown> = {};
   if (args.cancellationReason) body['cancellationReason'] = args.cancellationReason;
 
-  const response = await calPost<CalApiResponse<Booking>>(`/bookings/${args.uid}/cancel`, body);
-  return response.data ?? response;
+  const response = await calPost<CalApiResponse<Booking>>(`/bookings/${encodeURIComponent(args.uid)}/cancel`, body);
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function rescheduleBooking(args: {
@@ -89,6 +89,6 @@ export async function rescheduleBooking(args: {
   };
   if (args.reschedulingReason) body['reschedulingReason'] = args.reschedulingReason;
 
-  const response = await calPost<CalApiResponse<Booking>>(`/bookings/${args.uid}/reschedule`, body);
-  return response.data ?? response;
+  const response = await calPost<CalApiResponse<Booking>>(`/bookings/${encodeURIComponent(args.uid)}/reschedule`, body);
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }

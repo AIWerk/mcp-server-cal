@@ -12,14 +12,14 @@ export async function listEventTypes(args: {
   if (args.userId) params['userId'] = args.userId;
 
   const response = await calGet<CalApiResponse<EventType[]>>('/event-types', params);
-  return response.data ?? response;
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function getEventType(args: { id: number }): Promise<unknown> {
   if (!args.id) throw new Error('id is required');
 
-  const response = await calGet<CalApiResponse<EventType>>(`/event-types/${args.id}`);
-  return response.data ?? response;
+  const response = await calGet<CalApiResponse<EventType>>(`/event-types/${encodeURIComponent(String(args.id))}`);
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function createEventType(args: {
@@ -49,7 +49,7 @@ export async function createEventType(args: {
   if (args.metadata) body['metadata'] = args.metadata;
 
   const response = await calPost<CalApiResponse<EventType>>('/event-types', body);
-  return response.data ?? response;
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function updateEventType(args: {
@@ -77,13 +77,13 @@ export async function updateEventType(args: {
     throw new Error('At least one field to update is required');
   }
 
-  const response = await calPatch<CalApiResponse<EventType>>(`/event-types/${args.id}`, body);
-  return response.data ?? response;
+  const response = await calPatch<CalApiResponse<EventType>>(`/event-types/${encodeURIComponent(String(args.id))}`, body);
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
 
 export async function deleteEventType(args: { id: number }): Promise<unknown> {
   if (!args.id) throw new Error('id is required');
 
-  const response = await calDelete<CalApiResponse<EventType>>(`/event-types/${args.id}`);
-  return response.data ?? response;
+  const response = await calDelete<CalApiResponse<EventType>>(`/event-types/${encodeURIComponent(String(args.id))}`);
+  return response.data !== undefined ? response.data : { status: response.status ?? 'ok' };
 }
