@@ -1,6 +1,10 @@
 // Cal.com API v2 client
 
-const CAL_API_VERSION = '2024-08-13';
+// NOTE: cal-api-version header removed 2026-04-03.
+// Cal.com changed v2 routing — sending the version header causes 404 on
+// /event-types, /schedules and other endpoints.  Without the header every
+// endpoint returns 200.  We keep the constant for future reference only.
+const _CAL_API_VERSION_UNUSED = '2024-08-13';
 
 export class CalApiError extends Error {
   constructor(
@@ -32,7 +36,6 @@ function getBaseUrl(): string {
 function buildHeaders(apiKey: string): Record<string, string> {
   return {
     Authorization: `Bearer ${apiKey}`,
-    'cal-api-version': CAL_API_VERSION,
     'Content-Type': 'application/json',
     Accept: 'application/json',
   };
