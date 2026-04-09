@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.1] - 2026-04-03
+
+### Fixed
+- Remove `cal-api-version: 2024-08-13` header that caused 404 errors on Cal.com v2 API endpoints (`/event-types`, `/schedules`, etc.). Cal.com changed v2 endpoint routing — without the header, all endpoints return 200.
+
 ## [1.0.0] - 2026-03-28
 
 ### Added
