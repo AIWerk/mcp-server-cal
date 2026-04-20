@@ -10,17 +10,33 @@ Cal.com scheduling MCP server - manage bookings, event types, and availability d
 
 Connect Claude, Cursor, or any MCP-compatible AI to your Cal.com account. Create bookings, check availability, manage event types, and view schedules - all via natural language.
 
-## Quick Start
+## Install
+
+Two ways to run this server — pick the one that fits.
+
+### Option 1 — Hosted (zero setup)
+
+No local runtime, no env vars on your machine — secrets are AES-256-GCM encrypted server-side via HashiCorp Vault.
+
+1. Sign up at **[aiwerkmcp.com](https://aiwerkmcp.com)**.
+2. Install **Cal.com** from the catalog and paste your `CAL_API_KEY`.
+3. Point your MCP client (Claude.ai, Cursor, Hermes, …) at your hosted endpoint:
+   ```
+   https://bridge.aiwerk.ch/u/<your-user-id>/mcp
+   ```
+   with your Bearer token.
+
+All 12 tools, 3 resources, and 3 prompts appear. Install other AIWerk recipes from the same bridge.
+
+### Option 2 — Self-hosted (npx)
+
+Run directly — you manage the API key:
 
 ```bash
-npx @aiwerk/mcp-server-cal
+CAL_API_KEY=cal_live_your_api_key_here npx @aiwerk/mcp-server-cal
 ```
 
-Set your Cal.com API key:
-
-```bash
-export CAL_API_KEY=cal_live_your_api_key_here
-```
+Or wire it into your MCP client config — see [Configuration](#configuration) below.
 
 ## Tools
 
@@ -131,11 +147,17 @@ The server starts and responds to `tools/list` without `CAL_API_KEY`. The key is
 - Use environment variables or a secrets manager
 - The server only reads `CAL_API_KEY` at tool call time, never logs it
 
-## Related Projects
+## About AIWerk MCP
 
-- [@aiwerk/mcp-bridge](https://github.com/AIWerk/mcp-bridge) — MCP router with 100+ server recipes
-- [@aiwerk/mcp-server-imap](https://github.com/AIWerk/mcp-server-imap) — Universal IMAP/SMTP email MCP server
-- [AIWerk MCP Catalog](https://catalog.aiwerk.ch) — Searchable catalog of MCP server recipes
+Part of the **[AIWerk MCP platform](https://aiwerkmcp.com)** — curated, signed MCP recipes served either as npm packages for self-hosting or through our multi-tenant hosted bridge (`bridge.aiwerk.ch`).
+
+Other AIWerk MCP servers:
+
+- [@aiwerk/mcp-server-imap](https://github.com/AIWerk/mcp-server-imap) — IMAP/SMTP email, provider-agnostic
+- [@aiwerk/mcp-server-wise](https://github.com/AIWerk/mcp-server-wise) — Wise (TransferWise) Personal API, read-only
+- [@aiwerk/mcp-server-clawhub](https://github.com/AIWerk/mcp-server-clawhub) — ClawHub skill catalog
+
+Browse the full catalog (20+ recipes including GitHub, Linear, Notion, Stripe, …) at [aiwerkmcp.com](https://aiwerkmcp.com).
 
 ## Contributing
 

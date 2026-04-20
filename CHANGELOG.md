@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.3] - 2026-04-21
+
+### Docs
+- README: Split install into Hosted (aiwerkmcp.com) and Self-hosted (npx) options. The hosted option lands on `bridge.aiwerk.ch/u/<user-id>/mcp` with zero local setup — secrets AES-256-GCM encrypted via Vault.
+- README: Replaced the stale `catalog.aiwerk.ch` link (sunsetted 2026-04-09) with `aiwerkmcp.com`. Cleaned up the "100+ recipes" overclaim on mcp-bridge.
+- README: New "About AIWerk MCP" footer cross-linking sibling servers (imap, wise, clawhub).
+
+### Package metadata
+- Added `homepage`, `repository`, and `bugs` fields — surfaces on npmjs.com and external catalogs (Smithery, Glama, Pulse MCP).
+
 ## [1.0.2] - 2026-04-20
 
 ### Fixed
