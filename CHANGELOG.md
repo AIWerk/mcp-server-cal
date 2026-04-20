@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.2] - 2026-04-20
+
+### Fixed
+- **CLI entry fix** — `isCliEntry` now compares realpath of `import.meta.url` against realpath of `process.argv[1]`. The old `pathToFileURL(argv[1]).href === import.meta.url` check returned false under npm's bin-shim indirection, so `npx @aiwerk/mcp-server-cal` silently exited (code 0, no stdout/stderr) without running `main()`. Discovered via bridge spawn audit — cal was silent-exiting on `bridge.aiwerk.ch` the same way clawhub@0.1.0 and wise@0.1.0 did.
+
 ## [1.0.1] - 2026-04-03
 
 ### Fixed
