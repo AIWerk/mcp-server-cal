@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.4] - 2026-04-21
+
+### Added
+- **`createSandboxServer` export** — Smithery scan-time entry. Smithery's CLI bundles the module to CJS and calls this export to introspect tools/resources/prompts without starting a stdio transport. Returns the bare `McpServer` instance (not the `{ server, close }` wrapper). Enables publishing to smithery.ai catalog.
+- Default export is now `createSandboxServer` — accommodates both Smithery conventions (named vs default lookup).
+
+### Fixed
+- `readPackageVersion` — safely falls back to `0.0.0-sandbox` when `import.meta.url` is empty (CJS bundle case, e.g. Smithery's sandbox). Previously would throw and abort the scan.
+
+### Notes
+- No breaking change: `main()`, `createServer()`, and the CLI flow (`npx @aiwerk/mcp-server-cal`) behave exactly as in 1.0.3.
+
 ## [1.0.3] - 2026-04-21
 
 ### Docs

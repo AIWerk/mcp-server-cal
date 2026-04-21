@@ -13,12 +13,20 @@ import { getAvailability, listSchedules } from './tools/availability.js';
 // Resources and Prompts use the MCP SDK's built-in resource()/prompt() methods
 
 function readPackageVersion(): string {
+  // import.meta.url can be empty when bundled as CJS (e.g. Smithery's scan-time
+  // sandbox bundler). Fall back to a literal version instead of throwing —
+  // scan only needs tool metadata, not an accurate version string.
+  if (!import.meta.url) return '0.0.0-sandbox';
   try {
     const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf-8')) as { version: string };
     return pkg.version;
   } catch {
-    const pkg = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf-8')) as { version: string };
-    return pkg.version;
+    try {
+      const pkg = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf-8')) as { version: string };
+      return pkg.version;
+    } catch {
+      return '0.0.0-sandbox';
+    }
   }
 }
 
@@ -451,6 +459,18 @@ export function createServer() {
     },
   };
 }
+
+// Smithery scan-time entry. Smithery's CLI bundles this module to CJS, loads it,
+// and calls this export to introspect tools / resources / prompts without
+// connecting a transport. Cal uses lazy credentials, so no real API key is
+// needed at registration time. Return the bare McpServer (not the { server,
+// close } wrapper) so Smithery can call listTools / listResources / listPrompts
+// directly on the returned object.
+export default function createSandboxServer() {
+  return createServer().server;
+}
+
+export { createSandboxServer };
 
 async function main() {
   const { server, close } = createServer();
