@@ -1,6 +1,6 @@
 {
   "name": "@aiwerk/mcp-server-cal",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Cal.com scheduling MCP server - manage bookings, event types, and availability",
   "type": "module",
   "main": "dist/src/server.js",
