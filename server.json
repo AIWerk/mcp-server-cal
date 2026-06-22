@@ -1,0 +1,31 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.AIWerk/mcp-server-cal",
+  "description": "Cal.com scheduling MCP server: manage bookings, event types, and availability.",
+  "version": "1.0.6",
+  "repository": {
+    "url": "https://github.com/AIWerk/mcp-server-cal",
+    "source": "github"
+  },
+  "websiteUrl": "https://aiwerkmcp.com/servers/cal/",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@aiwerk/mcp-server-cal",
+      "version": "1.0.6",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "CAL_API_KEY",
+          "description": "Cal.com API key (prefix cal_ or cal_live_). Create one at Cal.com Settings > Security > API Keys.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
